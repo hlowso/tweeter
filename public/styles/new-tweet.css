@@ -1,6 +1,6 @@
 section.new-tweet {
 	position: relative;
-	margin: 2em;
+	margin: 2em 2em 0em 2em;
 	height: 160px;
   background-color: #eee;
   border-style: solid;
