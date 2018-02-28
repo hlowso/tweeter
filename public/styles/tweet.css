@@ -71,6 +71,8 @@
 #tweets footer > img {
 	float: right;
 	margin: auto;
+	width: 20px;
+	height: 20px;
 	visibility: hidden;
 }
 

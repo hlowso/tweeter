@@ -9,7 +9,7 @@ function handleTextChange() {
     $counter.css('color', '');
     $counter.text(current_count);
   }
-};
+}
 
 $(document).ready(function() {
   $('.new-tweet').find('textarea').on('keyup', handleTextChange);

@@ -55,59 +55,102 @@ const FLAG_IMG_URL = 'https://files.slack.com/files-pri/T2G8TE2E5-F9FQS0QN7/twee
 const ARROWS_IMG_URL = 'https://files.slack.com/files-pri/T2G8TE2E5-F9GP7N4K0/tweetretweet.png';
 const HEART_IMG_URL = 'https://files.slack.com/files-pri/T2G8TE2E5-F9GP7MYTY/tweetlike.png';
 
-function timeSinceTweet(date) {
-  const mscds_elapsed = new Date().getTime() - date;
-  const discs = [1000, 60, 60, 24, 7];
-  const units = ['second', 'minute', 'hour', 'day', 'week'];
+  
 
-  for(let i = 0; i < discs.length; i ++){
-    let elapsed = mscds_elapsed;
-    for(let j = 0; j < discs.length - i; j ++) {
-      elapsed /= discs[j];
-    }
-    elapsed = Math.floor(elapsed);
-    if(elapsed === 1)
-      return `1 ${units[discs.length - i]} ago`;
-    if(elapsed > 1)
-      return `${elapsed} ${units[discs.length - 1 - i]}s ago`;
-  }
-  return 'just now';
+// Some fake data for testing purposes...
 
-}
-
-function createTweetElement(tweet_obj) {
-  $header = $('<header></header>');
-  $header
-    .append(`<img src="${tweet_obj.user.avatars.small}">`)
-    .append(`<h2>${tweet_obj.user.name}</h2>`)
-    .append(`<small>${tweet_obj.user.handle}</small>`);
-  $div = $('<div></div>');
-  $div
-    .append( `<p>${tweet_obj.content.text}</p>`);
-  $footer = $('<footer></footer>');
-  $footer 
-    .append(`<small>${timeSinceTweet(tweet_obj.created_at)}</small>`)
-    .append(`<img src="${HEART_IMG_URL}" width="20px" height="20px">`)
-    .append(`<img src="${ARROWS_IMG_URL}" width="20px" height="20px">`)
-    .append(`<img src="${FLAG_IMG_URL}" width="20px" height="20px">`);
-  $tweet = $('<article></article>');
-  $tweet
-    .append($header)
-    .append($div)
-    .append($footer);
-
-  return $tweet;
-}
-
-function renderTweets(tweet_objs) {
-  $tweets = $('<section></section>');
-  $tweets.attr('id', 'tweets');
-  for(let tweet_obj of tweet_objs) {
-    $tweets.append(createTweetElement(tweet_obj));
-  }
-  return $tweets;
-}
 
 $(document).ready(function() {
-  $('main').append(renderTweets(data));
+//   $('main').append(renderTweets(data));
+
+  function timeSinceTweet(date) {
+    const mscds_elapsed = new Date().getTime() - date;
+    const discs = [1000, 60, 60, 24, 7];
+    const units = ['second', 'minute', 'hour', 'day', 'week'];
+
+    for(let i = 0; i < discs.length; i ++){
+      let elapsed = mscds_elapsed;
+      for(let j = 0; j < discs.length - i; j ++) {
+        elapsed /= discs[j];
+      }
+      elapsed = Math.floor(elapsed);
+      if(elapsed === 1)
+        return `1 ${units[discs.length - i]} ago`;
+      if(elapsed > 1)
+        return `${elapsed} ${units[discs.length - 1 - i]}s ago`;
+    }
+    return 'just now';
+
+  }
+
+  function createTweetElement(tweet_obj) {
+
+    const $header = $('<header></header>')
+      .append(`<img src="${tweet_obj.user.avatars.small}">`)
+      .append(`<h2>${tweet_obj.user.name}</h2>`)
+      .append(`<small>${tweet_obj.user.handle}</small>`);
+
+    const $div = $('<div></div>')
+      .append( `<p>${tweet_obj.content.text}</p>`);
+
+    const $footer = $('<footer></footer>')
+      .append(`<small>${timeSinceTweet(tweet_obj.created_at)}</small>`)
+      .append(`<img src="${HEART_IMG_URL}">`)
+      .append(`<img src="${ARROWS_IMG_URL}">`)
+      .append(`<img src="${FLAG_IMG_URL}">`);
+
+    const $tweet = $('<article></article>')
+      .append($header)
+      .append($div)
+      .append($footer);
+
+    return $tweet;
+  }
+
+  function renderTweets(tweet_objs) {
+    const $tweets = $('<section></section>');
+    $tweets.attr('id', 'tweets');
+    for(let tweet_obj of tweet_objs) {
+      $tweets.append(createTweetElement(tweet_obj));
+    }
+    return $tweets;
+  }
+
+  function loadTweets() {
+    $.ajax({
+      url: '/tweets',
+      method: 'GET',
+      success: function(json) {
+        $('main').append(renderTweets(json));
+      }
+    });
+  }
+
+  loadTweets();
+
+  $('.new-tweet').find('form').on('submit', function(event) {
+    event.preventDefault();
+    
+    const $this = $(this);
+    const $textarea = $this.parent().find('textarea');
+    const $text_counter = $this.parent().find('.counter');
+    const text = $textarea.val();
+
+    if(!text)
+      alert('Text area empty!');
+    else if(text.length > 140)
+      alert('Text too long!');
+    else {
+      $.post(
+        '/tweets', 
+        $this.serialize(),
+        function(response) {
+          console.log(response);
+        }
+      );
+      $textarea.val('');
+      $text_counter.text('140');
+    }
+  });
+
 });
