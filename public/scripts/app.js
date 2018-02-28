@@ -4,64 +4,16 @@
  * Reminder: Use (and do all your DOM work in) jQuery's document ready function
  */
 
-const data = [
-  {
-    "user": {
-      "name": "Newton",
-      "avatars": {
-        "small":   "https://vanillicon.com/788e533873e80d2002fa14e1412b4188_50.png",
-        "regular": "https://vanillicon.com/788e533873e80d2002fa14e1412b4188.png",
-        "large":   "https://vanillicon.com/788e533873e80d2002fa14e1412b4188_200.png"
-      },
-      "handle": "@SirIsaac"
-    },
-    "content": {
-      "text": "If I have seen further it is by standing on the shoulders of giants"
-    },
-    "created_at": 1461116232227
-  },
-  {
-    "user": {
-      "name": "Descartes",
-      "avatars": {
-        "small":   "https://vanillicon.com/7b89b0d8280b93e2ba68841436c0bebc_50.png",
-        "regular": "https://vanillicon.com/7b89b0d8280b93e2ba68841436c0bebc.png",
-        "large":   "https://vanillicon.com/7b89b0d8280b93e2ba68841436c0bebc_200.png"
-      },
-      "handle": "@rd" },
-    "content": {
-      "text": "Je pense , donc je suis"
-    },
-    "created_at": 1461113959088
-  },
-  {
-    "user": {
-      "name": "Johann von Goethe",
-      "avatars": {
-        "small":   "https://vanillicon.com/d55cf8e18b47d4baaf60c006a0de39e1_50.png",
-        "regular": "https://vanillicon.com/d55cf8e18b47d4baaf60c006a0de39e1.png",
-        "large":   "https://vanillicon.com/d55cf8e18b47d4baaf60c006a0de39e1_200.png"
-      },
-      "handle": "@johann49"
-    },
-    "content": {
-      "text": "Es ist nichts schrecklicher als eine tätige Unwissenheit."
-    },
-    "created_at": 1461113796368
-  }
-];
-
 const FLAG_IMG_URL = 'https://files.slack.com/files-pri/T2G8TE2E5-F9FQS0QN7/tweetflag.png';
 const ARROWS_IMG_URL = 'https://files.slack.com/files-pri/T2G8TE2E5-F9GP7N4K0/tweetretweet.png';
 const HEART_IMG_URL = 'https://files.slack.com/files-pri/T2G8TE2E5-F9GP7MYTY/tweetlike.png';
 
-  
-
-// Some fake data for testing purposes...
-
 
 $(document).ready(function() {
-//   $('main').append(renderTweets(data));
+
+  // *------------------*
+  // | USEFUL FUNCTIONS |
+  // *------------------*
 
   function timeSinceTweet(date) {
     const mscds_elapsed = new Date().getTime() - date;
@@ -83,7 +35,7 @@ $(document).ready(function() {
 
   }
 
-  function createTweetElement(tweet_obj) {
+  function createTweetElement(tweet_obj, fresh=false) {
 
     const $header = $('<header></header>')
       .append(`<img src="${tweet_obj.user.avatars.small}">`)
@@ -99,7 +51,10 @@ $(document).ready(function() {
       .append(`<img src="${ARROWS_IMG_URL}">`)
       .append(`<img src="${FLAG_IMG_URL}">`);
 
-    const $tweet = $('<article></article>')
+    let tweet_class = '';
+    if(fresh)
+      tweet_class = 'class="fresh"';
+    const $tweet = $(`<article ${tweet_class}></article>`)
       .append($header)
       .append($div)
       .append($footer);
@@ -110,7 +65,8 @@ $(document).ready(function() {
   function renderTweets(tweet_objs) {
     const $tweets = $('<section></section>');
     $tweets.attr('id', 'tweets');
-    for(let tweet_obj of tweet_objs) {
+    for(let i = tweet_objs.length - 1; i > -1; i --) {
+      const tweet_obj = tweet_objs[i];
       $tweets.append(createTweetElement(tweet_obj));
     }
     return $tweets;
@@ -126,13 +82,17 @@ $(document).ready(function() {
     });
   }
 
-  loadTweets();
+  function escape(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+  }
 
-  $('.new-tweet').find('form').on('submit', function(event) {
+  function postTweet(event) {
     event.preventDefault();
-    
     const $this = $(this);
     const $textarea = $this.parent().find('textarea');
+    $textarea.val(escape($textarea.val()));
     const $text_counter = $this.parent().find('.counter');
     const text = $textarea.val();
 
@@ -144,13 +104,22 @@ $(document).ready(function() {
       $.post(
         '/tweets', 
         $this.serialize(),
-        function(response) {
-          console.log(response);
+        function(res) {
+          const $new_tweet = createTweetElement(res, true);
+          $('#tweets').prepend($new_tweet);
+          $new_tweet.slideDown();
         }
       );
       $textarea.val('');
       $text_counter.text('140');
     }
-  });
+  }
+
+  // *------------*
+  // | ON LOAD... |
+  // *------------*
+
+  loadTweets();
+  $('.new-tweet').find('form').on('submit', postTweet);
 
 });

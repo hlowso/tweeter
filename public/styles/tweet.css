@@ -7,7 +7,6 @@
   border-color: #696969;
   border-radius: 5px;
   opacity: 1.0;
-  display: 
 }
 
 #tweets header {
@@ -72,10 +71,14 @@
 	float: right;
 	margin: auto;
 	width: 20px;
-	height: 20px;
+	height: 20px`;
 	visibility: hidden;
 }
 
 #tweets > article:hover footer > img{
 	visibility: visible;
+}
+
+#tweets > .fresh {
+	display: none;
 }
