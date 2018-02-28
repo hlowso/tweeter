@@ -102,7 +102,7 @@ function createTweetElement(tweet_obj) {
 function renderTweets(tweet_objs) {
   $tweets = $('<section></section>');
   $tweets.attr('id', 'tweets');
-  for(let tweet_obj in tweet_objs) {
+  for(let tweet_obj of tweet_objs) {
     $tweets.append(createTweetElement(tweet_obj));
   }
   return $tweets;
