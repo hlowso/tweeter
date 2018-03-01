@@ -51,10 +51,11 @@ $(document).ready(function() {
       .append(`<img src="${ARROWS_IMG_URL}">`)
       .append(`<img src="${FLAG_IMG_URL}">`);
 
-    let tweet_class = '';
+    let class_equals_fresh = '';
     if(fresh)
-      tweet_class = 'class="fresh"';
-    const $tweet = $(`<article ${tweet_class}></article>`)
+      class_equals_fresh = ' class="fresh"';
+
+    const $tweet = $(`<article${class_equals_fresh}></article>`)
       .append($header)
       .append($div)
       .append($footer);
@@ -96,10 +97,12 @@ $(document).ready(function() {
     const $text_counter = $this.parent().find('.counter');
     const text = $textarea.val();
 
-    if(!text)
+    if(!text) {
       alert('Text area empty!');
-    else if(text.length > 140)
+    }
+    else if(text.length > 140) {
       alert('Text too long!');
+    }
     else {
       $.post(
         '/tweets', 
@@ -115,11 +118,20 @@ $(document).ready(function() {
     }
   }
 
+  function composeClickHandler() {
+    $new_tweet = $('.new-tweet');
+    $new_tweet.slideToggle(400, function() {
+      $textarea = $(this).find('textarea');
+      $textarea.focus();
+    });
+  }
+
   // *------------*
   // | ON LOAD... |
   // *------------*
 
   loadTweets();
   $('.new-tweet').find('form').on('submit', postTweet);
+  $('#nav-bar').find('.compose').on('click', composeClickHandler);
 
 });
