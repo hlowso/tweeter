@@ -9,17 +9,56 @@
 	z-index: 10;
 }
 
-#nav-bar img.logo {
+#nav-bar .logo {
 	width: 80px;
 	height: 80px;
 	float: left;
 }
 
-#nav-bar span.header {
+#nav-bar .header {
 	position: relative;
 	float: left;
 	left: 10px;
 	top: 21px;
 	bottom: 21px;
 	font-size: 200%;
+}
+
+/* Compose Button */
+
+#nav-bar .compose {
+	position: relative;
+	float: right;
+	top: 10px;
+	width: 120px;
+	height: 60px;
+	border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  border-radius: 5px;
+	font-size: 125%;
+	background-color: #e4f9fa;
+}
+
+#nav-bar .compose:hover {
+	background-color: white;
+}
+
+#nav-bar .compose img {
+	position: absolute;
+	top: 15px;
+	left: 5px;
+}
+
+#nav-bar .compose p {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: 18px;
+	right: 10px;
+	color: #00a087;
+}
+
+#nav-bar .compose:hover p {
+	color: black;
 }
