@@ -65,7 +65,8 @@ $(document).ready(function() {
 
     const $footer = $('<footer></footer>')
       .append(`<small>${timeSinceTweet(tweet_obj.created_at)}</small>`)
-      .append(`<img src="${HEART_IMG_URL}">`)
+      .append(`<p>${tweet_obj.likes}</p>`)
+      .append(`<img src="${HEART_IMG_URL}" class="like">`)
       .append(`<img src="${ARROWS_IMG_URL}">`)
       .append(`<img src="${FLAG_IMG_URL}">`);
 
@@ -100,6 +101,16 @@ $(document).ready(function() {
       method: 'GET',
       success: function(json) {
         $('main').append(renderTweets(json));
+      }
+    });
+  }
+
+  function isLoggedIn(resolve) {
+    $.ajax({
+      url: '/',
+      method: 'GET',
+      success: function(res) {
+        resolve(res);
       }
     });
   }
@@ -143,20 +154,48 @@ $(document).ready(function() {
   }
 
   // A handler for the compose button.
-  function composeClickHandler() {
+  function displayNewTweet() {
+
     $new_tweet = $('.new-tweet');
-    $new_tweet.slideToggle(400, function() {
-      $textarea = $(this).find('textarea');
-      $textarea.focus();
-    });
+    $form = $new_tweet.find('form');
+
+    if($new_tweet.css('display') === 'none') {    
+      $new_tweet.slideDown(400, function() {
+
+        $textarea = $(this).find('textarea');
+        $textarea.focus();
+
+        $form.on('submit', postTweet);
+        $(document).on('keypress', function(event) {
+          if(event.which === 13) {
+            event.preventDefault();
+            $form.submit();
+          }
+        });
+
+      });
+    }
+    else {
+      $form.off('submit');
+      $(document).off('keypress');
+      $new_tweet.slideUp();
+    }
   }
+
+  // function likeTweet() {
+  //   $this = $(this);
+  //   current_user = 
+  // }
 
   // *------------*
   // | ON LOAD... |
   // *------------*
 
+
   loadTweets();
-  $('.new-tweet').find('form').on('submit', postTweet);
-  $('#nav-bar').find('.compose').on('click', composeClickHandler);
+  $('#nav-bar').find('.compose').on('click', displayNewTweet);
+  // $('#tweets').find('.like').on('click', likeTweet);
+
+  
 
 });

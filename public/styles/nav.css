@@ -50,10 +50,15 @@
 	background-color: white;
 }
 
-#nav-bar .compose img {
+#nav-bar .compose svg {
 	position: absolute;
-	top: 15px;
+	top: 20px;
 	left: 5px;
+	color: #00a087;
+}
+
+#nav-bar .compose:hover svg {
+	color: black;
 }
 
 #nav-bar .compose p {

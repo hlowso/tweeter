@@ -15,5 +15,5 @@ function handleTextChange() {
 }
 
 $(document).ready(function() {
-  $('.new-tweet').find('textarea').on('keyup', handleTextChange);
+  $('.new-tweet').find('textarea').on('keypress', handleTextChange);
 });

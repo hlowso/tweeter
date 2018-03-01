@@ -98,6 +98,20 @@
 	visibility: visible;
 }
 
+#tweets footer > p {
+	float: right;
+	padding: 0;
+	margin: 0;
+}
+
+/* -------------
+    FRESH TWEET
+   ------------- */
+
+/* 
+	We want fresh tweets to be
+	hidden at first so they can 
+	slide down */
 #tweets > .fresh {
 	display: none;
 }
