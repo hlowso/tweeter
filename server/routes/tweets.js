@@ -1,9 +1,13 @@
+/*jslint node: true */
 "use strict";
 
-const userHelper    = require("../lib/util/user-helper")
-
+const userHelper    = require("../lib/util/user-helper");
 const express       = require('express');
 const tweetsRoutes  = express.Router();
+
+// The only thing I modified in this file is line 43:
+// I send the tweet object back to the client-side app
+// so that it can be displayed immediately.
 
 module.exports = function(DataHelpers) {
 
@@ -43,4 +47,4 @@ module.exports = function(DataHelpers) {
 
   return tweetsRoutes;
 
-}
+};

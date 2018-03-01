@@ -1,3 +1,7 @@
+/* ---------------
+    GENERAL STUFF
+   --------------- */
+
 #tweets > article {
 	position: relative;
 	margin: 1em 2em 0em 2em;
@@ -6,8 +10,11 @@
   border-width: 1px;
   border-color: #696969;
   border-radius: 5px;
-  opacity: 1.0;
 }
+
+/* --------------
+    HEADER STUFF
+   -------------- */
 
 #tweets header {
 	position: relative;
@@ -48,11 +55,23 @@
 	right: 0.5em;
 }
 
+/* ------------
+    TEXT STUFF
+   ------------ */
+
 #tweets div {
 	margin: auto; 
 	width: 100%;
 	padding: 0.5em;
 }
+
+#tweets div > p {
+	word-wrap: break-word;
+}
+
+/* --------------
+    FOOTER STUFF
+   -------------- */
 
 #tweets footer {
 	position: absolute;

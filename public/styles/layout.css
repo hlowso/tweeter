@@ -29,7 +29,7 @@ main.container {
 	position: relative;
 	margin: auto;
 	padding-top: 120px;
+	padding-bottom: 40px;
 	width: 450px;
-	height: 1440px;
 	background-color: white;
 }

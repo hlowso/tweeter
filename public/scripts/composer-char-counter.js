@@ -1,6 +1,9 @@
+// This function is pretty self-explanatory
+
 function handleTextChange() {
   let current_count = 140 - $(this).val().length;
   let $counter = $(this).siblings('.counter');
+
   if(current_count < 0) {
     $counter.css('color', 'red');
     $counter.text(current_count);

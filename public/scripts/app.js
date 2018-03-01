@@ -1,8 +1,6 @@
-/*
- * Client-side JS logic goes here
- * jQuery is already loaded
- * Reminder: Use (and do all your DOM work in) jQuery's document ready function
- */
+// *--------------*
+// | USEFUL ICONS |
+// *--------------*
 
 const FLAG_IMG_URL = 'https://files.slack.com/files-pri/T2G8TE2E5-F9FQS0QN7/tweetflag.png';
 const ARROWS_IMG_URL = 'https://files.slack.com/files-pri/T2G8TE2E5-F9GP7N4K0/tweetretweet.png';
@@ -15,26 +13,46 @@ $(document).ready(function() {
   // | USEFUL FUNCTIONS |
   // *------------------*
 
+  // This function takes a date (time in miliseconds since the 1970s)
+  // and returns a string containing a phrase indicating the time that
+  // has elapsed since the date.
+  // EX: '5 seconds ago', '3 days ago', '10 weeks ago', etc.
   function timeSinceTweet(date) {
+    
     const mscds_elapsed = new Date().getTime() - date;
+    // 'discs' stands for discritizations
     const discs = [1000, 60, 60, 24, 7];
     const units = ['second', 'minute', 'hour', 'day', 'week'];
+    let elapsed = mscds_elapsed;
+
+    for(let j = 0; j < discs.length; j ++) {
+      elapsed /= discs[j];
+    }
 
     for(let i = 0; i < discs.length; i ++){
-      let elapsed = mscds_elapsed;
-      for(let j = 0; j < discs.length - i; j ++) {
-        elapsed /= discs[j];
+      let rounded = Math.floor(elapsed);
+
+      if(rounded === 1) {
+        return `1 ${units[discs.length - i - 1]} ago`;
       }
-      elapsed = Math.floor(elapsed);
-      if(elapsed === 1)
-        return `1 ${units[discs.length - i]} ago`;
-      if(elapsed > 1)
-        return `${elapsed} ${units[discs.length - 1 - i]}s ago`;
+
+      if(rounded > 1) {
+        return `${rounded} ${units[discs.length - 1 - i]}s ago`;
+      }
+
+      elapsed *= discs[discs.length - 1 - i];
     }
+
     return 'just now';
 
   }
 
+  // This function generates the html structure, in the form of a 
+  // jquery <article> object, of an individual tweet given the
+  // tweet in object form. If fresh is set to true, the function
+  // adds the class fresh to the article so that it can be picked out by 
+  // the css file /public/styles/tweet.css and made to slide down when it's
+  // added to the main page.
   function createTweetElement(tweet_obj, fresh=false) {
 
     const $header = $('<header></header>')
@@ -63,6 +81,8 @@ $(document).ready(function() {
     return $tweet;
   }
 
+  // This function generates the html structure, in the form of a 
+  // jquery <section> object, of all an array of tweet objects.
   function renderTweets(tweet_objs) {
     const $tweets = $('<section></section>');
     $tweets.attr('id', 'tweets');
@@ -73,6 +93,7 @@ $(document).ready(function() {
     return $tweets;
   }
 
+  // The ajax GET request used to obtain all the tweets in the database. 
   function loadTweets() {
     $.ajax({
       url: '/tweets',
@@ -83,12 +104,15 @@ $(document).ready(function() {
     });
   }
 
+  // A function for escaping dodgy, potentially dangerous characters 
+  // sent in by users.
   function escape(str) {
     var div = document.createElement('div');
     div.appendChild(document.createTextNode(str));
     return div.innerHTML;
   }
 
+  // The ajax POST request used to add a single tweet to the database.
   function postTweet(event) {
     event.preventDefault();
     const $this = $(this);
@@ -118,6 +142,7 @@ $(document).ready(function() {
     }
   }
 
+  // A handler for the compose button.
   function composeClickHandler() {
     $new_tweet = $('.new-tweet');
     $new_tweet.slideToggle(400, function() {
