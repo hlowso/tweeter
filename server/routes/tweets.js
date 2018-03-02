@@ -2,8 +2,8 @@
 "use strict";
 
 const userHelper    = require("../lib/util/user-helper");
-const express       = require('express');
-const tweetsRoutes  = express.Router();
+const express        = require('express');
+const tweetsRoutes   = express.Router();
 
 // The only thing I modified in this file is line 43:
 // I send the tweet object back to the client-side app
@@ -11,7 +11,12 @@ const tweetsRoutes  = express.Router();
 
 module.exports = function(DataHelpers) {
 
+  const authentication = require('./authentication.js')(DataHelpers);
+  tweetsRoutes.use(authentication.middleware);
+
+
   tweetsRoutes.get("/", function(req, res) {
+    // res.json({x: 'hello'});
     DataHelpers.getTweets((err, tweets) => {
       if (err) {
         res.status(500).json({ error: err.message });
@@ -44,6 +49,10 @@ module.exports = function(DataHelpers) {
         res.status(201).json(tweet);
       }
     });
+  });
+
+  tweetsRoutes.put("/tweets/:id", function(req, res) {
+
   });
 
   return tweetsRoutes;

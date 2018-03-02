@@ -105,16 +105,6 @@ $(document).ready(function() {
     });
   }
 
-  function isLoggedIn(resolve) {
-    $.ajax({
-      url: '/',
-      method: 'GET',
-      success: function(res) {
-        resolve(res);
-      }
-    });
-  }
-
   // A function for escaping dodgy, potentially dangerous characters 
   // sent in by users.
   function escape(str) {
@@ -122,6 +112,57 @@ $(document).ready(function() {
     div.appendChild(document.createTextNode(str));
     return div.innerHTML;
   }
+
+  // *------------------------*
+  // | LOGIN AND REGISTRATION |
+  // *------------------------*
+
+  function isLoggedIn(resolve) {
+    $.ajax({
+      url: '/verify',
+      method: 'GET',
+      success: function(res) {
+        resolve(res);
+      }
+    });
+  }
+
+  function putRegistration(event) {
+    
+    event.preventDefault();
+    const $form = $(this);
+
+    const $textarea = $form.find('textarea');
+    $textarea.val(escape($textarea.val()));
+    const text = $textarea.val();
+
+    if(!text) {
+      alert('username field left empty');
+    }
+    else if(text.length > 10) {
+      alert('username too long');
+    }
+    else {
+      $.ajax({
+        url: '/authentication', 
+        method: 'PUT',
+        data: $form.serialize(),
+        success: function(res) {
+          $('#register').slideUp();
+          goHome(res.name);
+        }
+      });
+    }   
+  }
+
+  function putLogout(event) {
+    $.ajax({
+      url: '/authentication/logout',
+      method: 'PUT',
+      success: () => window.location.href = '/' 
+    });
+  }
+
 
   // The ajax POST request used to add a single tweet to the database.
   function postTweet(event) {
@@ -187,15 +228,26 @@ $(document).ready(function() {
   //   current_user = 
   // }
 
+  function goHome(username) {
+    loadTweets();
+    $userdiv = $('#nav-bar').find('div');
+    $userdiv.css('visibility', 'visible');
+    $compose = $userdiv.find('.compose');
+    $compose.on('click', displayNewTweet);
+    $userdiv.find('.username').text(username);
+    $userdiv.find('.logout').on('click', putLogout);
+    // $('#tweets').find('.like').on('click', likeTweet);
+  }
+
   // *------------*
   // | ON LOAD... |
   // *------------*
 
-
-  loadTweets();
-  $('#nav-bar').find('.compose').on('click', displayNewTweet);
-  // $('#tweets').find('.like').on('click', likeTweet);
-
-  
-
+  // goHome();
+  $register = $('#register');
+  $register.slideDown();
+  $register.find('form').on('submit', putRegistration);
+  // const p = new Promise(isLoggedIn).then(function(res) {
+  //   alert(res);
+  // });
 });

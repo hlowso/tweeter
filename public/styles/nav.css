@@ -28,13 +28,21 @@
 	font-size: 200%;
 }
 
-/* ----------------
-    COMPOSE BUTTON
-   ---------------- */
+/* ------------
+    HOME STUFF
+   ------------ */
+
+#nav-bar > div {
+	visibility: hidden;
+	position: relative;
+	float: right;
+	width: 200px;
+	height: 80px;
+}
 
 #nav-bar .compose {
 	position: relative;
-	float: right;
+	float: left;
 	top: 10px;
 	width: 120px;
 	height: 60px;
@@ -72,4 +80,38 @@
 
 #nav-bar .compose:hover p {
 	color: black;
+}
+
+#nav-bar .user {
+	position: relative;
+	float: right;
+	top: 10px;
+	height: 60px;
+	width: 80px;
+}
+
+#nav-bar .username {
+	position: absolute;
+	left: 10px;
+	top: 2px;
+	padding: 0;
+	margin: 0;
+	overflow: scroll;
+	color: #e4f9fa;
+	font-size: 150%;
+}
+
+#nav-bar .user button {
+	position: absolute;
+	left: 10px;
+	bottom: 2px;
+	border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  border-radius: 5px;
+  background-color: #e4f9fa;
+}
+
+#nav-bar .user button:hover {
+	background-color: white;
 }

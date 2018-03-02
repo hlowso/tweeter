@@ -6,14 +6,19 @@
 const PORT          = 8080;
 const express       = require("express");
 const bodyParser    = require("body-parser");
+const cookieSession = require('cookie-session');
 const app           = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieSession({
+  name: 'session',
+  secret: 'Listen... doo wah oooh... Do you want to know a secret?.. doo wah oooh'
+}));
 app.use(express.static("public"));
 
 // SWITCHING TO MONGODB
 
-let db, DataHelpers, tweetsRoutes; 
+let db, DataHelpers, tweetsRoutes, authentication; 
 
 // Here I nest the code for initializing the database and starting up the 
 // app inside the .then() function of a promise to ensure that the app is only
@@ -21,14 +26,18 @@ let db, DataHelpers, tweetsRoutes;
 
 // The function passed to the Promise constructor is the export of my mongo
 // connection file, which is located in the /server/lib/ directory
+
 const connection = new Promise(require("./lib/mongo-connection.js"))
 .then((mongo_database) => { 
 
   db = mongo_database;
-  DataHelpers = require("./lib/data-helpers.js")(db);
-  tweetsRoutes = require("./routes/tweets")(DataHelpers);
+  DataHelpers =    require("./lib/data-helpers.js")(db);
+  authentication = require("./routes/authentication.js")(DataHelpers);
+  tweetsRoutes =   require("./routes/tweets.js")(DataHelpers);
 
+  app.use("/authentication", authentication.routes);
   app.use("/tweets", tweetsRoutes);
+
   app.listen(PORT, () => {
     console.log("Example app listening on port " + PORT);
   });
