@@ -82,12 +82,16 @@ function createTweetElement(tweet_obj, fresh=false) {
 
 // This function generates the html structure, in the form of a 
 // jquery <section> object, of all an array of tweet objects.
-function renderTweets(tweet_objs) {
+function renderTweets(tweet_objs, liked_tweet_ids) {
   const $tweets = $('<section></section>');
   $tweets.attr('id', 'tweets');
   for(let i = tweet_objs.length - 1; i > -1; i --) {
     const tweet_obj = tweet_objs[i];
-    $tweets.append(createTweetElement(tweet_obj));
+    $tweet_element = createTweetElement(tweet_obj);
+    if(liked_tweet_ids.includes(($tweet_element).data('id'))) {
+      $tweet_element.find('footer').find('span').css('color', 'red');
+    }
+    $tweets.append($tweet_element);
   }
   return $tweets;
 }
@@ -97,8 +101,8 @@ function loadTweets(callback) {
   $.ajax({
     url: '/tweets',
     method: 'GET',
-    success: function(json) {
-      $('main').append(renderTweets(json));
+    success: function(res) {
+      $('main').append(renderTweets(res.tweets, res.liked_tweet_ids));
       callback();
     }
   });

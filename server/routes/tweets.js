@@ -25,12 +25,12 @@ module.exports = function(DataHelpers) {
 
 
   tweetsRoutes.get("/", function(req, res) {
-    // res.json({x: 'hello'});
-    DataHelpers.getTweets((err, tweets) => {
+    const username = req.session.user;
+    DataHelpers.getTweets(username, (err, tweets, liked_tweet_ids) => {
       if (err) {
         res.status(500).json({ error: err.message });
       } else {
-        res.json(tweets);
+        res.json({tweets: tweets, liked_tweet_ids: liked_tweet_ids});
       }
     });
   });

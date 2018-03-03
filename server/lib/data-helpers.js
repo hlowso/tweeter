@@ -20,11 +20,17 @@ module.exports = function makeDataHelpers(db) {
       });
     },
 
-    getTweets: function(callback) {
+    getTweets: function(username, callback) {
       const sortNewestFirst = (a, b) => a.created_at - b.created_at;
-      tweets.find().toArray((err, tweets) => {
-        callback(err, tweets.sort(sortNewestFirst));
+      users.findOne({name: username}, (err, user) => {
+        if(err) {
+          callback(err, null, null);
+        }
+        tweets.find().toArray((err, tweets) => {
+          callback(err, tweets.sort(sortNewestFirst), user.liked_tweet_ids);
+        });
       });
+      
     },
 
     likeToggle: function(id, username, answer) {
