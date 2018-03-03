@@ -1,0 +1,117 @@
+/* --------------
+    STATIC STUFF
+   -------------- */
+
+#nav-bar {
+	position: fixed;
+	width: 100%;
+	height: 80px;
+	background-color: #00a087;
+	color: #e8fdff;
+	padding-left: 2em;
+	padding-right: 2em; 
+	z-index: 10;
+}
+
+#nav-bar .logo {
+	width: 80px;
+	height: 80px;
+	float: left;
+}
+
+#nav-bar .header {
+	position: relative;
+	float: left;
+	left: 10px;
+	top: 21px;
+	bottom: 21px;
+	font-size: 200%;
+}
+
+/* ------------
+    HOME STUFF
+   ------------ */
+
+#nav-bar > div {
+	visibility: hidden;
+	position: relative;
+	float: right;
+	width: 200px;
+	height: 80px;
+}
+
+#nav-bar .compose {
+	position: relative;
+	float: left;
+	top: 10px;
+	width: 120px;
+	height: 60px;
+	border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  border-radius: 5px;
+	font-size: 125%;
+	background-color: #e4f9fa;
+}
+
+#nav-bar .compose:hover {
+	background-color: white;
+}
+
+#nav-bar .compose svg {
+	position: absolute;
+	top: 20px;
+	left: 5px;
+	color: #00a087;
+}
+
+#nav-bar .compose:hover svg {
+	color: black;
+}
+
+#nav-bar .compose p {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: 18px;
+	right: 10px;
+	color: #00a087;
+}
+
+#nav-bar .compose:hover p {
+	color: black;
+}
+
+#nav-bar .user {
+	position: relative;
+	float: right;
+	top: 10px;
+	height: 60px;
+	width: 80px;
+}
+
+#nav-bar .username {
+	position: absolute;
+	left: 10px;
+	top: 2px;
+	padding: 0;
+	margin: 0;
+	overflow: scroll;
+	color: #e4f9fa;
+	font-size: 150%;
+}
+
+#nav-bar .user button {
+	position: absolute;
+	left: 10px;
+	bottom: 2px;
+	border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  border-radius: 5px;
+  background-color: #e4f9fa;
+}
+
+#nav-bar .user button:hover {
+	background-color: white;
+}

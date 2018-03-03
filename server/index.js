@@ -3,18 +3,21 @@
 
 // Basic express setup:
 
-const PORT          = 8080;
-const express       = require("express");
-const bodyParser    = require("body-parser");
-const cookieSession = require('cookie-session');
-const app           = express();
+const PORT           = 8080;
+const express        = require("express");
+const path           = require('path');
+const sassMiddleware = require('node-sass-middleware');
+const bodyParser     = require("body-parser");
+const cookieSession  = require('cookie-session');
+const app            = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieSession({
   name: 'session',
   secret: 'Listen... doo wah oooh... Do you want to know a secret?.. doo wah oooh'
 }));
-app.use(express.static("public"));
+
+app.use(express.static(path.join(__dirname, '../public')));
 
 // SWITCHING TO MONGODB
 
