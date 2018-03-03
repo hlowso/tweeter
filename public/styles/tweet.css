@@ -86,7 +86,8 @@
 	margin: auto;
 }
 
-#tweets footer > img {
+#tweets footer > img, 
+#tweets footer > span {
 	float: right;
 	margin: auto;
 	width: 20px;
@@ -94,7 +95,12 @@
 	visibility: hidden;
 }
 
-#tweets > article:hover footer > img{
+#tweets footer > span {
+	color: #00a087;
+}
+
+#tweets > article:hover footer > img, 
+#tweets > article:hover footer > span {
 	visibility: visible;
 }
 

@@ -17,17 +17,29 @@ module.exports = function makeAuthenticationFunctions(DataHelpers) {
           next();
         }
         else {
-          res.redirect(303, '/');
+          res.json({
+            username: username,
+            is_logged_in: false
+          });
         }
       });
-
     }
     else {
-      res.redirect(303, '/');
+      res.json({
+        username: undefined,
+        is_logged_in: false
+      });
     }
   };
 
 // These are my own routes. They'll be used for login verification.
+
+  routes.get('/', [userVerification], function(req, res) {
+    res.status(200).json({
+      username: req.session.user,
+      is_logged_in: true
+    });
+  });
 
   routes.put('/', function(req, res) {
     const valid_username = req.body.user;
@@ -44,9 +56,6 @@ module.exports = function makeAuthenticationFunctions(DataHelpers) {
         res.status(200).json({name: valid_username});
       }
     });
-
-
-
   });
 
   routes.put('/logout', function(req, res) {

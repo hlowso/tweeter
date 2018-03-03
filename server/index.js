@@ -38,6 +38,8 @@ const connection = new Promise(require("./lib/mongo-connection.js"))
   app.use("/authentication", authentication.routes);
   app.use("/tweets", tweetsRoutes);
 
+  // app.get("/", )
+
   app.listen(PORT, () => {
     console.log("Example app listening on port " + PORT);
   });
