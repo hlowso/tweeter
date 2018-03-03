@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/index.js",
-    "build-css": "node-sass sass/main.sass public/styles/main.css",
+    "build-css": "node-sass scss/main.scss public/styles/main.css",
     "watch-css": "./node_modules/.bin/nodemon watch sass -e sass -x \"cat *.sass\"",
-    "local": "./node_modules/.bin/nodemon --watch server --watch sass -e js,sass -x \"npm run build-css && node server/index.js\""
+    "local": "./node_modules/.bin/nodemon -e scss --watch scss -x \"npm run build-css && node server/index.js\""
   },
   "author": "Lighthouse Labs",
   "license": "ISC",

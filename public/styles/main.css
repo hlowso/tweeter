@@ -1,2 +1,274 @@
-main .container {
-  background-color: red; }
+/*
+ * http://www.paulirish.com/2012/box-sizing-border-box-ftw/
+ * https://css-tricks.com/international-box-sizing-awareness-day/
+ * Do not modify these two selectors, please
+ */
+html {
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+/*
+ * Global layout stuff
+ */
+body {
+  margin: 0;
+  color: #244751;
+  background-color: #eee;
+  font-family: "Roboto Condensed", sans-serif; }
+
+/*
+ * Additional CSS can be defined below or in other CSS files, as per instructions
+ */
+main.container {
+  position: relative;
+  margin: auto;
+  padding-top: 120px;
+  padding-bottom: 40px;
+  width: 450px;
+  background-color: white; }
+
+/* --------------
+    STATIC STUFF
+   -------------- */
+#nav-bar {
+  position: fixed;
+  width: 100%;
+  height: 80px;
+  background-color: #00a087;
+  color: #e8fdff;
+  padding-left: 2em;
+  padding-right: 2em;
+  z-index: 10; }
+
+#nav-bar .logo {
+  width: 80px;
+  height: 80px;
+  float: left; }
+
+#nav-bar .header {
+  position: relative;
+  float: left;
+  left: 10px;
+  top: 21px;
+  bottom: 21px;
+  font-size: 200%; }
+
+/* ------------
+    HOME STUFF
+   ------------ */
+#nav-bar > div {
+  visibility: hidden;
+  position: relative;
+  float: right;
+  width: 200px;
+  height: 80px; }
+
+#nav-bar .compose {
+  position: relative;
+  float: left;
+  top: 10px;
+  width: 120px;
+  height: 60px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  border-radius: 5px;
+  font-size: 125%;
+  background-color: #e4f9fa; }
+
+#nav-bar .compose:hover {
+  background-color: white; }
+
+#nav-bar .compose svg {
+  position: absolute;
+  top: 20px;
+  left: 5px;
+  color: #00a087; }
+
+#nav-bar .compose:hover svg {
+  color: black; }
+
+#nav-bar .compose p {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  top: 18px;
+  right: 10px;
+  color: #00a087; }
+
+#nav-bar .compose:hover p {
+  color: black; }
+
+#nav-bar .user {
+  position: relative;
+  float: right;
+  top: 10px;
+  height: 60px;
+  width: 80px; }
+
+#nav-bar .username {
+  position: absolute;
+  left: 10px;
+  top: 2px;
+  padding: 0;
+  margin: 0;
+  overflow: scroll;
+  color: #e4f9fa;
+  font-size: 150%; }
+
+#nav-bar .user button {
+  position: absolute;
+  left: 10px;
+  bottom: 2px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  border-radius: 5px;
+  background-color: #e4f9fa; }
+
+#nav-bar .user button:hover {
+  background-color: white; }
+
+#register {
+  position: relative;
+  margin: 2em 2em 0em 2em;
+  height: 160px;
+  background-color: #eee;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #696969;
+  border-radius: 5px;
+  display: none; }
+
+section.new-tweet {
+  position: relative;
+  margin: 2em 2em 0em 2em;
+  height: 160px;
+  background-color: #eee;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #696969;
+  border-radius: 5px;
+  display: none; }
+
+section.new-tweet h2 {
+  margin: 0.3em;
+  border-bottom: 2px solid black; }
+
+section.new-tweet form {
+  margin: 0.3em; }
+
+section.new-tweet textarea {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  float: left;
+  width: 100%;
+  height: 60px; }
+
+section.new-tweet span.counter {
+  margin-right: 1em;
+  float: right; }
+
+/* ---------------
+    GENERAL STUFF
+   --------------- */
+#tweets > article {
+  position: relative;
+  margin: 1em 2em 0em 2em;
+  height: 200px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #696969;
+  border-radius: 5px; }
+
+/* --------------
+    HEADER STUFF
+   -------------- */
+#tweets header {
+  position: relative;
+  background-color: #eee;
+  height: 65px;
+  opacity: 0.5; }
+
+#tweets > article:hover header {
+  opacity: 1.0; }
+
+#tweets header:before,
+#tweets header:after {
+  content: "";
+  display: table; }
+
+#tweets header:after {
+  clear: both; }
+
+#tweets header > img {
+  margin: 0.5em;
+  float: left;
+  border-radius: 5px; }
+
+#tweets header > h2 {
+  margin-top: 0.5em;
+  float: left;
+  width: 254px; }
+
+#tweets header > small {
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em; }
+
+/* ------------
+    TEXT STUFF
+   ------------ */
+#tweets div {
+  margin: auto;
+  width: 100%;
+  padding: 0.5em; }
+
+#tweets div > p {
+  word-wrap: break-word; }
+
+/* --------------
+    FOOTER STUFF
+   -------------- */
+#tweets footer {
+  position: absolute;
+  border-top: 1px solid #F0F0F0;
+  bottom: 0;
+  height: 35px;
+  width: 100%;
+  padding: 0.3em; }
+
+#tweets footer > small {
+  margin: auto; }
+
+#tweets footer > img,
+#tweets footer > span {
+  float: right;
+  margin: auto;
+  width: 20px;
+  height: 20px;
+  visibility: hidden; }
+
+#tweets footer > span {
+  color: #00a087; }
+
+#tweets > article:hover footer > img,
+#tweets > article:hover footer > span {
+  visibility: visible; }
+
+#tweets footer > p {
+  float: right;
+  padding: 0;
+  margin: 0; }
+
+/* -------------
+    FRESH TWEET
+   ------------- */
+/* 
+	We want fresh tweets to be
+	hidden at first so they can 
+	slide down */
+#tweets > .fresh {
+  display: none; }
