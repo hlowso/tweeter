@@ -14,12 +14,9 @@ function generateId() {
   return id;
 }
 
-// The only thing I modified in this file is line 43:
-// I send the tweet object back to the client-side app
-// so that it can be displayed immediately.
-
 module.exports = function(DataHelpers) {
 
+  // For all routes involving tweets, my authentication middleware is used.
   const authentication = require('./authentication.js')(DataHelpers);
   tweetsRoutes.use(authentication.middleware);
 
@@ -58,6 +55,7 @@ module.exports = function(DataHelpers) {
     });
   });
 
+  // I've added this route for liking a tweet.
   tweetsRoutes.put("/:id", function(req, res) {
 
     const id = req.params.id;

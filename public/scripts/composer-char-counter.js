@@ -1,6 +1,7 @@
 // This function is pretty self-explanatory
 
 function handleTextChange() {
+
   let current_count = 140 - $(this).val().length;
   let $counter = $(this).siblings('.counter');
 

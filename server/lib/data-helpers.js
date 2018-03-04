@@ -1,10 +1,7 @@
 /*jslint node: true */
 "use strict";
 
-// Simulates the kind of delay we see with network or filesystem operations
-// const simulateDelay = require("./util/simulate-delay");
-
-// Defines helper functions for saving and getting tweets, using the database `db`
+// Defines helper functions for accessing the two collections in the database: tweets and users.
 module.exports = function makeDataHelpers(db) {
 
   const tweets = db.collection('tweets');
@@ -12,7 +9,9 @@ module.exports = function makeDataHelpers(db) {
 
   return {
 
-    // ACCESSING 'tweets' COLLECTION
+    // To save a tweet we add it to the tweets collection
+    // and add its ID to the creator's array of tweets in the
+    // users collection.
     saveTweet: function(newTweet, username, callback) {
       tweets.insertOne(newTweet, callback);
       users.update({name: username}, {$push: 
@@ -20,6 +19,9 @@ module.exports = function makeDataHelpers(db) {
       });
     },
 
+    // In this function we get all the tweets from the tweets collection
+    // and also the array from the users collection containing the IDs of
+    // all the tweets that the user with the name username had liked.
     getTweets: function(username, callback) {
       const sortNewestFirst = (a, b) => a.created_at - b.created_at;
       users.findOne({name: username}, (err, user) => {
@@ -33,16 +35,23 @@ module.exports = function makeDataHelpers(db) {
       
     },
 
-    likeToggle: function(id, username, answer) {
+    // This function changes the liked status of the tweet with ID id
+    // wrt the user with name username. This is only allowed if both the
+    // user and the tweet exist and if the id cannot be found among those
+    // in the user.tweets array, i.e if the user didn't make the tweet.
+    // In that case, we call the callback function with the following arguments:
+    // (error), (tweet exists (boolean)), (user made the tweet (boolean)), 
+    // (1 or -1 dependin on whether the status of the tweet was already 'liked') 
+    likeToggle: function(id, username, callback) {
       tweets.findOne({id: id}, (err, tweet) => {
         if(err) {
-          answer(err, null, null);
+          callback(err, null, null);
         }
         else {
           if(tweet !== null) {
             users.findOne({name: username}, (err, user) => {
               if(err) {
-                answer(err, null, null);
+                callback(err, null, null);
               }
               else {
                 
@@ -62,27 +71,29 @@ module.exports = function makeDataHelpers(db) {
                       {likes: tweet.likes + summand}
                     });
                     users.update({name: username}, user);
-                    answer(null, true, false, summand);
+                    callback(null, true, false, summand);
                   }
                   else {
-                    answer(null, true, true);
+                    callback(null, true, true);
                   }
                 }
                 else {
-                  answer(new Error('user not found'), null, null);
+                  callback(new Error('user not found'), null, null);
                 }
 
               }
             });
           }
           else {
-            answer(null, false, null);
+            callback(null, false, null);
           }
         }
       });
     },
 
-    // ACCESSING 'users' COLLECTION
+    // The is_logged_in attribute of the user object contains
+    // the boolean indicating whether or not a user is logged in.
+    // We simply look at this boolean to check the login status of a user.
     isLoggedIn: function(username, callback) {
       users.findOne({name: username}, (err, user) => {
         if(err) {
@@ -102,10 +113,14 @@ module.exports = function makeDataHelpers(db) {
       });
     },
 
-    login: function(new_username, answerUserExists) {
+    // Login and registration functionality are both provided by 
+    // this function. If a user didn't exist previously, they are 
+    // added to the database with clean attributes. Otherwise their
+    // is_logged_in attribute is set to true.
+    login: function(new_username, callback) {
       users.findOne({name: new_username}, (err, user) => {
         if(err) {
-          answerUserExists(err, null);
+          callback(err, null);
         }
         else if(user === null) {
           const new_user = {
@@ -114,17 +129,19 @@ module.exports = function makeDataHelpers(db) {
             tweets: [],
             liked_tweet_ids: []
           };
-          users.insertOne(new_user, (err) => answerUserExists(err, false));
+          users.insertOne(new_user, (err) => callback(err, false));
         }
         else {
           users.update({name: new_username}, {$set:
             {is_logged_in: true}
           });
-          answerUserExists(null, true);
+          callback(null, true);
         }
       });
     },
 
+    // If the user exists, this function sets their login 
+    // status to false.
     logout: function(username, answer) {
       users.findOne({name: username}, (err, user) => {
         if(err) {
@@ -140,12 +157,6 @@ module.exports = function makeDataHelpers(db) {
           answer(null);
         }
       });
-    },
-
-
-
-    lookUpUser: function(username, callback) {
-      db.collection('users').findOne({name: username}, callback);
     }
 
   };

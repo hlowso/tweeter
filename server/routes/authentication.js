@@ -4,8 +4,10 @@
 const express = require('express');
 const routes  = express.Router();
 
+// This function defines all routes concerned with login status.
 module.exports = function makeAuthenticationFunctions(DataHelpers) {
 
+  // This middleware function checks the login status of a user.
   const userVerification = (req, res, next) => {
     const username = req.session.user;
     if(username) {
@@ -32,8 +34,7 @@ module.exports = function makeAuthenticationFunctions(DataHelpers) {
     }
   };
 
-// These are my own routes. They'll be used for login verification.
-
+  // For checking login status -> GET /authentication
   routes.get('/', [userVerification], function(req, res) {
     res.status(200).json({
       username: req.session.user,
@@ -41,6 +42,7 @@ module.exports = function makeAuthenticationFunctions(DataHelpers) {
     });
   });
 
+  // For registration -> PUT /authentication
   routes.put('/', function(req, res) {
     const valid_username = req.body.user;
     req.session.user = valid_username;
@@ -58,12 +60,14 @@ module.exports = function makeAuthenticationFunctions(DataHelpers) {
     });
   });
 
+  // For terminating a session -> PUT /authentication
   routes.put('/logout', function(req, res) {
     DataHelpers.logout(req.session.user, (err) => {
       if(err) {
         res.status(500).json({ error: err.message });
       }
       else {
+        req.session = null;
         res.status(201).send();
       }
     });

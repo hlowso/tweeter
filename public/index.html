@@ -19,11 +19,12 @@
     <!-- External JS -->
     <script type="text/javascript" src="/vendor/jquery-2.2.3.min.js"></script>
 
+    <!-- Char Counter JS -->
+    <script type="text/javascript" src="/scripts/composer-char-counter.js"></script>
+
     <!-- App JS -->
     <script type="text/javascript" src="/scripts/app.js"></script>
 
-    <!-- Char Counter JS -->
-    <script type="text/javascript" src="/scripts/composer-char-counter.js"></script>
   </head>
 
   <body>
@@ -46,14 +47,14 @@
 
       <!-- The Signup form -->
       <section id="register">
-        <h2>Sign Up</h2>
+        <h2>Sign Up / Login</h2>
         <form action="/authentication" method="POST">
           <textarea name="user" placeholder="username"></textarea>
-          <input type="submit" value="Sign Up">
+          <input type="submit" value="Go">
         </form>
       </section>
 
-      <!-- The tweet form -->
+      <!-- The New Tweet form -->
       <section class="new-tweet">
         <h2>Compose Tweet</h2>
         <form action="/tweets" method="POST">

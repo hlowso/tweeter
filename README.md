@@ -2,7 +2,7 @@
 
 Tweeter is a simple, single-page Twitter clone.
 
-This repository is the starter code for the project: Students will fork and clone this repository, then build upon it to practice their HTML, CSS, JS, jQuery and AJAX front-end skills, and their Node, Express and MongoDB back-end skills.
+My version of tweeter includes the following stretch components: user login/registration (there are no passwords, so login and registration are almost the same thing), tweets of other users can be liked, tweets cannot be liked by the user who created them, the username in each tweet is the name of the user who made the tweet. Cookie session is used to obscure username cookies. Scss is compiled for styling. 
 
 ## Getting Started
 
@@ -13,5 +13,21 @@ This repository is the starter code for the project: Students will fork and clon
 
 ## Dependencies
 
+- Body Parser
+- Chance
+- Cookie Session
 - Express
 - Node 5.10.x or above
+- MD5
+- MongoDB
+- Node Sass
+
+## Dev Dependencies
+
+- Nodemon
+
+## Screenshots
+
+["Compose Tweet"]()
+["Login and Registration"]()
+["Like Tweet"]()

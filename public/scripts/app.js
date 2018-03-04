@@ -81,17 +81,23 @@ function createTweetElement(tweet_obj, fresh=false) {
 }
 
 // This function generates the html structure, in the form of a 
-// jquery <section> object, of all an array of tweet objects.
+// jquery <section> object, of all the tweets in the array tweet_objs.
+// liked_tweet_ids is an array containing all the ids of the tweets that 
+// the current user has liked. We make the heart icon in these tweets 
+// appear red.
 function renderTweets(tweet_objs, liked_tweet_ids) {
   const $tweets = $('<section></section>');
   $tweets.attr('id', 'tweets');
+
   for(let i = tweet_objs.length - 1; i > -1; i --) {
     const tweet_obj = tweet_objs[i];
     $tweet_element = createTweetElement(tweet_obj);
+
     if(liked_tweet_ids.includes(($tweet_element).data('id'))) {
       $tweet_element.find('footer').find('span').css('color', 'red');
     }
     $tweets.append($tweet_element);
+
   }
   return $tweets;
 }
@@ -120,16 +126,9 @@ function escape(str) {
 // | LOGIN AND REGISTRATION |
 // *------------------------*
 
-function isLoggedIn(resolve) {
-  $.ajax({
-    url: '/verify',
-    method: 'GET',
-    success: function(res) {
-      resolve(res);
-    }
-  });
-}
-
+// A PUT request to the /authentication URL is used to register/login a 
+// user. On successful registration/login, the user is sent to the 'home page',
+// which in our single page app simple means that the tweets are displayed.
 function putRegistration(event) {
   
   event.preventDefault();
@@ -158,6 +157,8 @@ function putRegistration(event) {
   }   
 }
 
+// A PUT to /authentication/logout is used for logging out. The user
+// is redirected to the login page.
 function putLogout(event) {
   $.ajax({
     url: '/authentication/logout',
@@ -170,10 +171,10 @@ function putLogout(event) {
 // The ajax POST request used to add a single tweet to the database.
 function postTweet(event) {
   event.preventDefault();
-  const $this = $(this);
-  const $textarea = $this.parent().find('textarea');
+  const $form = $(this);
+  const $textarea = $form.parent().find('textarea');
   $textarea.val(escape($textarea.val()));
-  const $text_counter = $this.parent().find('.counter');
+  const $text_counter = $form.parent().find('.counter');
   const text = $textarea.val();
 
   if(!text) {
@@ -185,9 +186,8 @@ function postTweet(event) {
   else {
     $.post(
       '/tweets', 
-      $this.serialize(),
+      $form.serialize(),
       function(res) {
-
         const $new_tweet = createTweetElement(res, true);
         $('#tweets').prepend($new_tweet);
         $new_tweet.slideDown();
@@ -198,7 +198,9 @@ function postTweet(event) {
   }
 }
 
-// A handler for the compose button.
+// A handler for the compose button. handleTextChange is the function
+// found in ./composer-char-counter.js. It is used to make the colour 
+// of the character counter red when the user runs out of characters.
 function displayNewTweet() {
 
   $new_tweet = $('.new-tweet');
@@ -209,6 +211,7 @@ function displayNewTweet() {
 
       $textarea = $(this).find('textarea');
       $textarea.focus();
+      $textarea.on('keyup', handleTextChange);
 
       $form.on('submit', postTweet);
       $(document).on('keypress', function(event) {
@@ -216,6 +219,9 @@ function displayNewTweet() {
           event.preventDefault();
           $form.submit();
         }
+        // else {
+        //   handleTextChange();
+        // }
       });
 
     });
@@ -227,6 +233,8 @@ function displayNewTweet() {
   }
 }
 
+// A PUT to /tweets/:id is used to toggle between the state of liked
+// and unliked in a given tweet.
 function toggleLikeTweet() {
   const $this = $(this);
   const $tweet = $this.closest('article');
@@ -244,6 +252,10 @@ function toggleLikeTweet() {
   });
 }
 
+// The 'home page'. The tweets are loaded and displayed, like buttons
+// are set to listen for clicks, the compose button and login data are 
+// made visible in the nav bar, and the logout button is set to listen
+// for clicks.
 function goHome(username) {
   loadTweets(function() {
     const $hearts = $('#tweets').find('.like');
@@ -261,6 +273,7 @@ function goHome(username) {
 
 }
 
+// The 'register page'. 
 function goRegister() {
   $register = $('#register');
   $register.slideDown();
@@ -271,6 +284,10 @@ function goRegister() {
   // | ON LOAD... |
   // *------------*
 
+// On initial load, we check whether the user is logged in with a GET
+// request to /authentication. If they're not logged in they're sent to
+// the 'register page'. Otherwise they're sent to the 'home page' where 
+// the tweets are displayed.
 $(document).ready(function() {
 
   $.ajax({

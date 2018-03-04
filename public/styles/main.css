@@ -120,6 +120,17 @@ main.container {
   height: 160px;
   background-color: #eee;
   display: none; }
+  #register h2 {
+    position: absolute;
+    left: 10px;
+    top: 10px; }
+  #register form {
+    position: absolute;
+    left: 10px;
+    bottom: 10px; }
+    #register form input {
+      position: relative;
+      bottom: 7px; }
 
 section.new-tweet {
   position: relative;
