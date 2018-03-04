@@ -2,122 +2,122 @@
     GENERAL STUFF
    --------------- */
 
-#tweets > article {
-	position: relative;
-	margin: 1em 2em 0em 2em;
-	height: 200px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #696969;
-  border-radius: 5px;
+#tweets {
+	> article {
+		position: relative;
+		margin: 1em 2em 0em 2em;
+		height: 200px;
+	  @extend %rounded-border;
+	}
+
+	/* --------------
+	    HEADER STUFF
+	   -------------- */
+
+	header {
+		position: relative;
+	  background-color: #eee;
+	  height: 65px;
+	  opacity: 0.5;
+	
+		> img {
+			margin: 0.5em;
+			float: left;
+			border-radius: 5px;
+		}
+
+		> h2 {
+			margin-top: 0.5em;
+			float: left;
+			width: 254px;
+		}
+
+		> small {
+			position: absolute;
+			top: 0.5em;
+			right: 0.5em;
+		}
+	}
+
+	> article:hover header{
+		opacity: 1.0;
+	}
+
+	header:before,
+	header:after {
+		content: "";
+		display: table;
+	}
+
+	header:after {
+		clear: both;
+	}	
+
+	/* ------------
+	    TEXT STUFF
+	   ------------ */
+
+	div {
+		margin: auto; 
+		width: 100%;
+		padding: 0.5em;
+
+		> p {
+			word-wrap: break-word;
+		}
+	}
+
+	/* --------------
+	    FOOTER STUFF
+	   -------------- */
+
+	footer {
+		position: absolute;
+		border-top: 1px solid #F0F0F0;
+		bottom: 0;
+		height: 35px;
+		width: 100%;
+		padding: 0.3em;
+	
+
+		> small {
+			margin: auto;
+		}
+
+		> img, 
+		> span {
+			float: right;
+			margin: auto;
+			width: 20px;
+			height: 20px;
+			visibility: hidden;
+		}
+
+		> span {
+			color: $primary-color;
+		}		
+
+		> p {
+			float: right;
+			padding: 0;
+			margin: 0;
+		}
+	}
+
+	> article:hover footer > img, 
+	> article:hover footer > span {
+		visibility: visible;
+	}
+
+	/* -------------
+	    FRESH TWEET
+	   ------------- */
+	/* 
+		We want fresh tweets to be
+		hidden at first so they can 
+		slide down */
+	> .fresh {
+		display: none;
+	}
 }
 
-/* --------------
-    HEADER STUFF
-   -------------- */
-
-#tweets header {
-	position: relative;
-  background-color: #eee;
-  height: 65px;
-  opacity: 0.5;
-}
-
-#tweets > article:hover header{
-	opacity: 1.0;
-}
-
-#tweets header:before,
-#tweets header:after {
-	content: "";
-	display: table;
-}
-
-#tweets header:after {
-	clear: both;
-}
-
-#tweets header > img {
-	margin: 0.5em;
-	float: left;
-	border-radius: 5px;
-}
-
-#tweets header > h2 {
-	margin-top: 0.5em;
-	float: left;
-	width: 254px;
-}
-
-#tweets header > small {
-	position: absolute;
-	top: 0.5em;
-	right: 0.5em;
-}
-
-/* ------------
-    TEXT STUFF
-   ------------ */
-
-#tweets div {
-	margin: auto; 
-	width: 100%;
-	padding: 0.5em;
-}
-
-#tweets div > p {
-	word-wrap: break-word;
-}
-
-/* --------------
-    FOOTER STUFF
-   -------------- */
-
-#tweets footer {
-	position: absolute;
-	border-top: 1px solid #F0F0F0;
-	bottom: 0;
-	height: 35px;
-	width: 100%;
-	padding: 0.3em;
-}
-
-#tweets footer > small {
-	margin: auto;
-}
-
-#tweets footer > img, 
-#tweets footer > span {
-	float: right;
-	margin: auto;
-	width: 20px;
-	height: 20px;
-	visibility: hidden;
-}
-
-#tweets footer > span {
-	color: #00a087;
-}
-
-#tweets > article:hover footer > img, 
-#tweets > article:hover footer > span {
-	visibility: visible;
-}
-
-#tweets footer > p {
-	float: right;
-	padding: 0;
-	margin: 0;
-}
-
-/* -------------
-    FRESH TWEET
-   ------------- */
-
-/* 
-	We want fresh tweets to be
-	hidden at first so they can 
-	slide down */
-#tweets > .fresh {
-	display: none;
-}
