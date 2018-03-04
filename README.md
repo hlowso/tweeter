@@ -28,6 +28,6 @@ My version of tweeter includes the following stretch components: user login/regi
 
 ## Screenshots
 
-["Compose Tweet"]()
-["Login and Registration"]()
-["Like Tweet"]()
+["Compose Tweet"](https://github.com/hlowso/tweeter/blob/master/docs/Compose%20Tweet.png?raw=true)
+["Like Tweet"](https://github.com/hlowso/tweeter/blob/master/docs/Like%20Tweet.png?raw=true)
+["Login and Registration"](https://github.com/hlowso/tweeter/blob/master/docs/Login%20Registration.png?raw=true)
